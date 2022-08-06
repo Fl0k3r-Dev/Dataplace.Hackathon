@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace Dataplace.Imersao.App
 {
@@ -25,7 +27,12 @@ namespace Dataplace.Imersao.App
         [STAThread]
         static void Main(string[] args)
         {
-       
+
+            var accountSid = "MGf40834462a3ace5fa86c02b4ed69c419";
+            var authToken = "[AuthToken]";
+
+            TwilioClient.Init(accountSid, authToken);
+
             var executingAssembly = new Assembly[]
                 { Assembly.GetExecutingAssembly(), typeof(Dataplace.Imersao.Core.Boot).Assembly};
 

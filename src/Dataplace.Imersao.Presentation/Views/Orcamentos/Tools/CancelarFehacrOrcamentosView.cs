@@ -25,8 +25,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
 {
@@ -198,6 +201,11 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
                         // registrar log na parte de detalhes
                         e.LogBuilder.Items.Add($"Orçamento {item.NumOrcamento} fechado", dpLibrary05.Infrastructure.Helpers.LogBuilder.LogTypeEnum.Information);
                         break;
+                    case TipoAcaoEnum.FecharOrcamento:
+                        await FecharOrcamento(item);
+                        // registrar log na parte de detalhes
+                        e.LogBuilder.Items.Add($"Orçamento {item.NumOrcamento} fechado", dpLibrary05.Infrastructure.Helpers.LogBuilder.LogTypeEnum.Information);
+                        break;
                     default:
                         break;
                 }
@@ -349,6 +357,7 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
 
         private OrcamentoQuery GetQuery()
         {
+            var 
             var situacaoList = new List<Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum>();
             if (chkAberto.Checked)
                 situacaoList.Add(Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum.Aberto);
@@ -356,7 +365,9 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
                 situacaoList.Add(Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum.Fechado);
             if (chkCancelado.Checked)
                 situacaoList.Add(Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum.Cancelado);
-  
+
+            if ()
+                situacaoList.Add(Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum.Cancelado);
 
             DateTime? dtInicio = null;
             DateTime? dtFim = null;
@@ -380,19 +391,15 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
         }
         private void exportarParaPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (gridOrcamento.RowCount > 0)
-            {
 
             int codigoArquivoPDF = ExportToPDF();
+
                 if (codigoArquivoPDF == 0)
                     MessageBox.Show("Não há registro(s) para exportar!");
-                    
+                    return;
+                
                 MessageBox.Show($"Sucesso ao exportar para PDF! Arquivo exportado em: '{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory.ToString()) + _Path + codigoArquivoPDF}'");
                    
-            }
-            else
-            {
-            }
         }
         private void TsiDesmarcarTodos_Click(object sender, EventArgs e)
         {
@@ -467,6 +474,29 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
                 {
                     item.Situacao = Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum.Fechado.ToDataValue();
                     item.DtFechamento = DateTime.Now.Date;
+                }
+
+            }
+
+        }
+
+        private async Task ReabrirOrcamento(OrcamentoViewModel item)
+        {
+
+            using (var scope = dpLibrary05.Infrastructure.ServiceLocator.ServiceLocatorScoped.Factory())
+            {
+
+                var command = new ReabrirOrcamentoCommand(item);
+                var mediator = scope.Container.GetInstance<IMediatorHandler>();
+
+                var notifications = scope.Container.GetInstance<INotificationHandler<DomainNotification>>();
+                await mediator.SendCommand(command);
+
+                item.Result = Result.ResultFactory.New(notifications.GetNotifications());
+                if (item.Result.Success)
+                {
+                    item.Situacao = Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum.Aberto.ToDataValue();
+                    item.DtFechamento = null;
                 }
 
             }
@@ -553,23 +583,38 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
         {
             int codigoArquivoExportado = ExportToPDF();
 
-            string instanceId = "instance950"; // your instanceId
-            string token = "yourtoken";         //instance Token
-            string mobile = "14996445166";
+            var caminhoArquivo = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory.ToString()) + _Path + codigoArquivoExportado + ".pdf";
 
-            var url = "https://api.ultramsg.com/" + instanceId + "/messages/document";
-            var client = new RestClient(url);
-            var request = new RestRequest(url, Method.Post);
-            request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            request.AddParameter("token", token);
-            request.AddParameter("to", mobile);
-            request.AddParameter("filename", $"{codigoArquivoExportado}.pdf");
-            request.AddParameter("document", $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory.ToString()) + _Path + codigoArquivoExportado}.pdf");
+            if (File.Exists(caminhoArquivo))
+            {
+                byte[] objByte = File.ReadAllBytes(caminhoArquivo);
+                string arquivo = Convert.ToBase64String(objByte);
+                File.WriteAllText(caminhoArquivo, arquivo);
 
-            RestResponse response = client.Execute(request);
-            var output = response.Content;
-            MessageBox.Show($"Resposta: " + output);
-        }
+                var client = new RestClient("https://app.whatsgw.com.br/api/WhatsGw/Send");
+                var request = new RestRequest("911b096c-9619-44da-9f4e-e42172f6ce7c", Method.Post);
+                request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+                request.AddParameter("apikey", "911b096c-9619-44da-9f4e-e42172f6ce7c");
+                request.AddParameter("phone_number", "5514996445166");
+                request.AddParameter("contact_phone_number", "5514996445166");
+                request.AddParameter("message_custom_id", "yowsoftwareid");
+                request.AddParameter("message_type", "image");
+                request.AddParameter("message_caption", "Notificando...");
+                request.AddParameter("message_body", $"{arquivo}.pdf");
+                request.AddParameter("message_body_mimetype", "application/pdf");
+                request.AddParameter("message_body_filename", $"{codigoArquivoExportado}.pdf");
+                request.AddParameter("download", "1");
+                RestResponse response = client.Post(request);
+                var teste = response.Content;
+                if (response.StatusCode == HttpStatusCode.OK)
+                    MessageBox.Show("Sucesso na transmissão!");
+                gridOrcamento.Refresh();
+            }
+            else
+            {
+                MessageBox.Show("Falha na transmissão!");
+            }
+    }
 
         private void _orcamentoList_DataSourceChanged(object sender, Dataplace.Core.win.Controls.List.Delegates.DataSourceChangedEventArgs<OrcamentoViewModel> e)
         {
@@ -580,10 +625,17 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
         {
             try
             {
-                int codigoGerado = generateCodePDF();
-                gridOrcamento.ExportToPDF(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory.ToString()) + _Path + $"{codigoGerado}.pdf");
-                return codigoGerado;
-            }catch(Exception ex)
+                if (gridOrcamento.RowCount > 0)
+                {
+
+                    int codigoGerado = generateCodePDF();
+                    gridOrcamento.ExportToPDF(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory.ToString()) + _Path + $"{codigoGerado}.pdf");
+                    return codigoGerado;
+                }
+                MessageBox.Show("Não há registros!");
+                return 0;
+            }
+            catch (Exception ex)
             {
                 SymException.ShowMessage(ex, System.Reflection.MethodBase.GetCurrentMethod());
                 return 0;

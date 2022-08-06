@@ -298,7 +298,7 @@
             this.dpiVendedor.FindMode = false;
             this.dpiVendedor.InterfaceField = null;
             this.dpiVendedor.IsReadonly = false;
-            this.dpiVendedor.Location = new System.Drawing.Point(118, 14);
+            this.dpiVendedor.Location = new System.Drawing.Point(118, 11);
             this.dpiVendedor.Margin = new System.Windows.Forms.Padding(4);
             this.dpiVendedor.Multiline = false;
             this.dpiVendedor.Name = "dpiVendedor";
