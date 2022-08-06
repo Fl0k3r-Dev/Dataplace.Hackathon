@@ -114,6 +114,11 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
             }
             dpiVendedor.SearchObject = GetSearchVendedor();
 
+            if (rangeDate.Date1.Parent is TableLayoutPanel t)
+            {
+                t.Width = 300;
+            }
+
             _orcamentoList.DataSourceChanged += _orcamentoList_DataSourceChanged;
 
         }
@@ -147,6 +152,9 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
 
             if (optFechar.Checked)
                 _tipoAcao = TipoAcaoEnum.FecharOrcamento;
+
+            if (optReabrir.Checked)
+                _tipoAcao = TipoAcaoEnum.ReabrirOrcamento;
 
 
 
@@ -219,8 +227,7 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
         private void CancelamentoOrcamentoView_AfterProcess(object sender, AfterProcessEventArgs e)
         {
             // exemplo de message box no final do processo
-            this.Message.Info("Sucesso!");
-
+            this.Message.Info("Sucesso no processamento!");
 
             //  desmarcar todos itens no final do processo
             _orcamentoList.ChangeCheckState(false);
