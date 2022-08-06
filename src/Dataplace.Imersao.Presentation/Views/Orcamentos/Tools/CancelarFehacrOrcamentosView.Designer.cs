@@ -46,11 +46,11 @@
             this.activeSearchData = new System.Windows.Forms.CheckBox();
             this.rangeDate = new dpLibrary05.ucSymGen_ReferenceDtp();
             this.gbAcoes = new System.Windows.Forms.GroupBox();
+            this.optReabrir = new System.Windows.Forms.RadioButton();
             this.optFechar = new System.Windows.Forms.RadioButton();
             this.optCancelar = new System.Windows.Forms.RadioButton();
-            this.dpiVendedor = new dpLibrary05.Infrastructure.Controls.DPInput();
             this.dpiNumOrcamento = new dpLibrary05.Infrastructure.Controls.DPInput();
-            this.dpiCliente = new dpLibrary05.Infrastructure.Controls.DPInput();
+            this.dpiVendedor = new dpLibrary05.Infrastructure.Controls.DPInput();
             ((System.ComponentModel.ISupportInitialize)(this.gridOrcamento)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -65,7 +65,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gridOrcamento.GroupByCaption = "Drag a column header here to group by that column";
             this.gridOrcamento.Images.Add(((System.Drawing.Image)(resources.GetObject("gridOrcamento.Images"))));
-            this.gridOrcamento.Location = new System.Drawing.Point(3, 140);
+            this.gridOrcamento.Location = new System.Drawing.Point(3, 135);
             this.gridOrcamento.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gridOrcamento.Name = "gridOrcamento";
             this.gridOrcamento.PreviewInfo.Location = new System.Drawing.Point(0, 0);
@@ -74,7 +74,7 @@
             this.gridOrcamento.PrintInfo.MeasurementDevice = C1.Win.C1TrueDBGrid.PrintInfo.MeasurementDeviceEnum.Screen;
             this.gridOrcamento.PrintInfo.MeasurementPrinterName = null;
             this.gridOrcamento.PrintInfo.PageSettings = ((System.Drawing.Printing.PageSettings)(resources.GetObject("gridOrcamento.PrintInfo.PageSettings")));
-            this.gridOrcamento.Size = new System.Drawing.Size(1344, 433);
+            this.gridOrcamento.Size = new System.Drawing.Size(1344, 438);
             this.gridOrcamento.TabIndex = 3;
             this.gridOrcamento.UseCompatibleTextRendering = false;
             this.gridOrcamento.PropBag = resources.GetString("gridOrcamento.PropBag");
@@ -82,7 +82,7 @@
             // btnCarregar
             // 
             this.btnCarregar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCarregar.Location = new System.Drawing.Point(1117, 35);
+            this.btnCarregar.Location = new System.Drawing.Point(1117, 10);
             this.btnCarregar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCarregar.Name = "btnCarregar";
             this.btnCarregar.Size = new System.Drawing.Size(109, 70);
@@ -155,7 +155,7 @@
             this.groupBox1.Controls.Add(this.chkAberto);
             this.groupBox1.Controls.Add(this.chkCancelado);
             this.groupBox1.Controls.Add(this.chkFechado);
-            this.groupBox1.Location = new System.Drawing.Point(615, 75);
+            this.groupBox1.Location = new System.Drawing.Point(552, 10);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -203,7 +203,7 @@
             // 
             this.gbData.Controls.Add(this.activeSearchData);
             this.gbData.Controls.Add(this.rangeDate);
-            this.gbData.Location = new System.Drawing.Point(615, 11);
+            this.gbData.Location = new System.Drawing.Point(132, 10);
             this.gbData.Margin = new System.Windows.Forms.Padding(4);
             this.gbData.Name = "gbData";
             this.gbData.Padding = new System.Windows.Forms.Padding(4);
@@ -245,6 +245,7 @@
             // 
             this.gbAcoes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbAcoes.Controls.Add(this.optReabrir);
             this.gbAcoes.Controls.Add(this.optFechar);
             this.gbAcoes.Controls.Add(this.optCancelar);
             this.gbAcoes.Location = new System.Drawing.Point(4, 579);
@@ -256,11 +257,22 @@
             this.gbAcoes.TabStop = false;
             this.gbAcoes.Text = "O que deseja fazer?";
             // 
+            // optReabrir
+            // 
+            this.optReabrir.AutoSize = true;
+            this.optReabrir.Location = new System.Drawing.Point(381, 23);
+            this.optReabrir.Margin = new System.Windows.Forms.Padding(4);
+            this.optReabrir.Name = "optReabrir";
+            this.optReabrir.Size = new System.Drawing.Size(147, 21);
+            this.optReabrir.TabIndex = 7;
+            this.optReabrir.Text = "Reabrir orçamento";
+            this.optReabrir.UseVisualStyleBackColor = true;
+            // 
             // optFechar
             // 
             this.optFechar.AutoSize = true;
             this.optFechar.Checked = true;
-            this.optFechar.Location = new System.Drawing.Point(32, 52);
+            this.optFechar.Location = new System.Drawing.Point(213, 23);
             this.optFechar.Margin = new System.Windows.Forms.Padding(4);
             this.optFechar.Name = "optFechar";
             this.optFechar.Size = new System.Drawing.Size(144, 21);
@@ -280,33 +292,6 @@
             this.optCancelar.Text = "Cancelar orçamento";
             this.optCancelar.UseVisualStyleBackColor = true;
             // 
-            // dpiVendedor
-            // 
-            this.dpiVendedor.Active = false;
-            this.dpiVendedor.DataSource = null;
-            this.dpiVendedor.DP_Caption = "2799";
-            this.dpiVendedor.DP_CaptionVisibleType = dpLibrary05.Infrastructure.Controls.DPInput.CaptionVisibleTypeEnum.Top;
-            this.dpiVendedor.DP_DataField = null;
-            this.dpiVendedor.DP_FilterMemo = false;
-            this.dpiVendedor.DP_InputType = dpLibrary05.Infrastructure.Controls.DPInput.InputTypeEnum.SearchValueInput;
-            this.dpiVendedor.DP_Length = 0;
-            this.dpiVendedor.DP_Maximum = null;
-            this.dpiVendedor.DP_Minimum = null;
-            this.dpiVendedor.DP_NumericPrecision = 0;
-            this.dpiVendedor.EditMask = null;
-            this.dpiVendedor.EditMaskUpdate = false;
-            this.dpiVendedor.FindMode = false;
-            this.dpiVendedor.InterfaceField = null;
-            this.dpiVendedor.IsReadonly = false;
-            this.dpiVendedor.Location = new System.Drawing.Point(118, 11);
-            this.dpiVendedor.Margin = new System.Windows.Forms.Padding(4);
-            this.dpiVendedor.Multiline = false;
-            this.dpiVendedor.Name = "dpiVendedor";
-            this.dpiVendedor.SearchObject = null;
-            this.dpiVendedor.SettingValue = false;
-            this.dpiVendedor.Size = new System.Drawing.Size(444, 41);
-            this.dpiVendedor.TabIndex = 503;
-            // 
             // dpiNumOrcamento
             // 
             this.dpiNumOrcamento.Active = false;
@@ -325,7 +310,7 @@
             this.dpiNumOrcamento.FindMode = false;
             this.dpiNumOrcamento.InterfaceField = null;
             this.dpiNumOrcamento.IsReadonly = false;
-            this.dpiNumOrcamento.Location = new System.Drawing.Point(18, 11);
+            this.dpiNumOrcamento.Location = new System.Drawing.Point(23, 10);
             this.dpiNumOrcamento.Margin = new System.Windows.Forms.Padding(4);
             this.dpiNumOrcamento.Multiline = false;
             this.dpiNumOrcamento.Name = "dpiNumOrcamento";
@@ -334,43 +319,41 @@
             this.dpiNumOrcamento.Size = new System.Drawing.Size(92, 44);
             this.dpiNumOrcamento.TabIndex = 507;
             // 
-            // dpiCliente
+            // dpiVendedor
             // 
-            this.dpiCliente.Active = false;
-            this.dpiCliente.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dpiCliente.DataSource = null;
-            this.dpiCliente.DP_Caption = null;
-            this.dpiCliente.DP_CaptionVisibleType = dpLibrary05.Infrastructure.Controls.DPInput.CaptionVisibleTypeEnum.Hide;
-            this.dpiCliente.DP_DataField = null;
-            this.dpiCliente.DP_FilterMemo = false;
-            this.dpiCliente.DP_InputType = dpLibrary05.Infrastructure.Controls.DPInput.InputTypeEnum.SearchValueInput;
-            this.dpiCliente.DP_Length = 0;
-            this.dpiCliente.DP_Maximum = null;
-            this.dpiCliente.DP_Minimum = null;
-            this.dpiCliente.DP_NumericPrecision = 0;
-            this.dpiCliente.EditMask = null;
-            this.dpiCliente.EditMaskUpdate = false;
-            this.dpiCliente.FindMode = false;
-            this.dpiCliente.InterfaceField = null;
-            this.dpiCliente.IsReadonly = false;
-            this.dpiCliente.Location = new System.Drawing.Point(18, 68);
-            this.dpiCliente.Margin = new System.Windows.Forms.Padding(4);
-            this.dpiCliente.Multiline = false;
-            this.dpiCliente.Name = "dpiCliente";
-            this.dpiCliente.SearchObject = null;
-            this.dpiCliente.SettingValue = false;
-            this.dpiCliente.Size = new System.Drawing.Size(544, 44);
-            this.dpiCliente.TabIndex = 508;
+            this.dpiVendedor.Active = false;
+            this.dpiVendedor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.dpiVendedor.DataSource = null;
+            this.dpiVendedor.DP_Caption = "2799";
+            this.dpiVendedor.DP_CaptionVisibleType = dpLibrary05.Infrastructure.Controls.DPInput.CaptionVisibleTypeEnum.Top;
+            this.dpiVendedor.DP_DataField = null;
+            this.dpiVendedor.DP_FilterMemo = false;
+            this.dpiVendedor.DP_InputType = dpLibrary05.Infrastructure.Controls.DPInput.InputTypeEnum.SearchValueInput;
+            this.dpiVendedor.DP_Length = 0;
+            this.dpiVendedor.DP_Maximum = null;
+            this.dpiVendedor.DP_Minimum = null;
+            this.dpiVendedor.DP_NumericPrecision = 0;
+            this.dpiVendedor.EditMask = null;
+            this.dpiVendedor.EditMaskUpdate = false;
+            this.dpiVendedor.FindMode = false;
+            this.dpiVendedor.InterfaceField = null;
+            this.dpiVendedor.IsReadonly = false;
+            this.dpiVendedor.Location = new System.Drawing.Point(23, 74);
+            this.dpiVendedor.Margin = new System.Windows.Forms.Padding(4);
+            this.dpiVendedor.Multiline = false;
+            this.dpiVendedor.Name = "dpiVendedor";
+            this.dpiVendedor.SearchObject = null;
+            this.dpiVendedor.SettingValue = false;
+            this.dpiVendedor.Size = new System.Drawing.Size(449, 43);
+            this.dpiVendedor.TabIndex = 508;
             // 
             // CancelarFehacrOrcamentosView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.dpiCliente);
+            this.Controls.Add(this.dpiVendedor);
             this.Controls.Add(this.dpiNumOrcamento);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.dpiVendedor);
             this.Controls.Add(this.gbAcoes);
             this.Controls.Add(this.gbData);
             this.Controls.Add(this.toolStrip1);
@@ -384,10 +367,9 @@
             this.Controls.SetChildIndex(this.toolStrip1, 0);
             this.Controls.SetChildIndex(this.gbData, 0);
             this.Controls.SetChildIndex(this.gbAcoes, 0);
-            this.Controls.SetChildIndex(this.dpiVendedor, 0);
             this.Controls.SetChildIndex(this.groupBox1, 0);
             this.Controls.SetChildIndex(this.dpiNumOrcamento, 0);
-            this.Controls.SetChildIndex(this.dpiCliente, 0);
+            this.Controls.SetChildIndex(this.dpiVendedor, 0);
             ((System.ComponentModel.ISupportInitialize)(this.gridOrcamento)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -420,11 +402,11 @@
         private System.Windows.Forms.RadioButton optFechar;
         private System.Windows.Forms.RadioButton optCancelar;
         private System.Windows.Forms.ToolStripMenuItem tsiPdf;
-        private dpLibrary05.Infrastructure.Controls.DPInput dpiVendedor;
         private dpLibrary05.Infrastructure.Controls.DPInput dpiNumOrcamento;
         private System.Windows.Forms.CheckBox activeSearchData;
         internal dpLibrary05.ucSymGen_ReferenceDtp rangeDate;
         private System.Windows.Forms.ToolStripMenuItem enviarParaWhatsAppToolStripMenuItem;
-        private dpLibrary05.Infrastructure.Controls.DPInput dpiCliente;
+        private System.Windows.Forms.RadioButton optReabrir;
+        private dpLibrary05.Infrastructure.Controls.DPInput dpiVendedor;
     }
 }

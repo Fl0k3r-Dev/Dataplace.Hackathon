@@ -83,6 +83,7 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
             // pegar evento clique das opçoes
             this.optCancelar.Click += opt_Click;
             this.optFechar.Click += opt_Click;
+            this.optReabrir.Click += opt_Click;
 
 
             _startDate = DateTime.Today.AddMonths(-1);
@@ -104,21 +105,14 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
             //Componentes
             dpiNumOrcamento.FindMode = true;
 
+            configureBtn();
+
             dpiVendedor.DP_InputType = dpLibrary05.Infrastructure.Controls.DPInput.InputTypeEnum.SearchValueInput;
             if (dpiVendedor.CurrentControl is dpLibrary05.Infrastructure.Controls.DPLookUpEdit l_Vendedor)
             {
                 l_Vendedor.DP_ShowCaption = false;
             }
             dpiVendedor.SearchObject = GetSearchVendedor();
-
-            dpiCliente.DP_InputType = dpLibrary05.Infrastructure.Controls.DPInput.InputTypeEnum.SearchValueInput;
-            if (dpiCliente.CurrentControl is dpLibrary05.Infrastructure.Controls.DPLookUpEdit l)
-            {
-                l.DP_ShowCaption = true;
-            }
-            dpiCliente.SearchObject = GetClienteSearchObject();
-
-            configureBtn();
 
             _orcamentoList.DataSourceChanged += _orcamentoList_DataSourceChanged;
 
@@ -132,6 +126,7 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
         {
             CancelarOrcamento,
             FecharOrcamento,
+            ReabrirOrcamento
         }
         private void CancelamentoOrcamentoView_ToolConfiguration(object sender, ToolConfigurationEventArgs e)
         {
@@ -201,10 +196,10 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
                         // registrar log na parte de detalhes
                         e.LogBuilder.Items.Add($"Orçamento {item.NumOrcamento} fechado", dpLibrary05.Infrastructure.Helpers.LogBuilder.LogTypeEnum.Information);
                         break;
-                    case TipoAcaoEnum.FecharOrcamento:
-                        await FecharOrcamento(item);
+                    case TipoAcaoEnum.ReabrirOrcamento:
+                        await ReabrirOrcamento(item);
                         // registrar log na parte de detalhes
-                        e.LogBuilder.Items.Add($"Orçamento {item.NumOrcamento} fechado", dpLibrary05.Infrastructure.Helpers.LogBuilder.LogTypeEnum.Information);
+                        e.LogBuilder.Items.Add($"Orçamento {item.NumOrcamento} reaberto", dpLibrary05.Infrastructure.Helpers.LogBuilder.LogTypeEnum.Information);
                         break;
                     default:
                         break;
@@ -224,7 +219,7 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
         private void CancelamentoOrcamentoView_AfterProcess(object sender, AfterProcessEventArgs e)
         {
             // exemplo de message box no final do processo
-            // this.Message.Info("MENSAGEM FINAL");
+            this.Message.Info("Sucesso!");
 
 
             //  desmarcar todos itens no final do processo
@@ -357,7 +352,6 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
 
         private OrcamentoQuery GetQuery()
         {
-            var 
             var situacaoList = new List<Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum>();
             if (chkAberto.Checked)
                 situacaoList.Add(Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum.Aberto);
@@ -366,18 +360,24 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
             if (chkCancelado.Checked)
                 situacaoList.Add(Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum.Cancelado);
 
-            if ()
-                situacaoList.Add(Core.Domain.Orcamentos.Enums.OrcamentoStatusEnum.Cancelado);
-
             DateTime? dtInicio = null;
             DateTime? dtFim = null;
-            if (rangeDate.Date1.Value is DateTime d)
+
+            if (rangeDate.Date1.Value is DateTime d && activeSearchData.Checked)
                 dtInicio = d;
 
-            if (rangeDate.Date2.Value is DateTime d2)
+            if (rangeDate.Date2.Value is DateTime d2 && activeSearchData.Checked)
                 dtFim = d2;
 
-            var query = new OrcamentoQuery() { SituacaoList = situacaoList, DtInicio =  dtInicio, DtFim =  dtFim };
+            var cpoNumOrcamento = dpiNumOrcamento.GetValue().ToString() ?? string.Empty;
+            var cpoVendedor = dpiVendedor.GetValue().ToString() ?? string.Empty;
+            var query = new OrcamentoQuery() {
+                SituacaoList = situacaoList,
+                DtInicio =  dtInicio,
+                DtFim =  dtFim,
+                NumOrcamento = cpoNumOrcamento,
+                Vendedor = cpoVendedor
+             };
             return query;
         }
 
@@ -596,7 +596,7 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
                 request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
                 request.AddParameter("apikey", "911b096c-9619-44da-9f4e-e42172f6ce7c");
                 request.AddParameter("phone_number", "5514996445166");
-                request.AddParameter("contact_phone_number", "5514996445166");
+                request.AddParameter("contact_phone_number", "5514981196851");
                 request.AddParameter("message_custom_id", "yowsoftwareid");
                 request.AddParameter("message_type", "image");
                 request.AddParameter("message_caption", "Notificando...");
