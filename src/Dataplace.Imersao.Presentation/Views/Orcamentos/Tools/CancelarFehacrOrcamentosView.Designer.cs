@@ -36,15 +36,21 @@
             this.tsiMarcar = new System.Windows.Forms.ToolStripMenuItem();
             this.tsiDesmarca = new System.Windows.Forms.ToolStripMenuItem();
             this.tsiExcel = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsiPdf = new System.Windows.Forms.ToolStripMenuItem();
+            this.enviarParaWhatsAppToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkAberto = new System.Windows.Forms.CheckBox();
             this.chkCancelado = new System.Windows.Forms.CheckBox();
             this.chkFechado = new System.Windows.Forms.CheckBox();
-            this.rangeDate = new dpLibrary05.ucSymGen_ReferenceDtp();
             this.gbData = new System.Windows.Forms.GroupBox();
+            this.activeSearchData = new System.Windows.Forms.CheckBox();
+            this.rangeDate = new dpLibrary05.ucSymGen_ReferenceDtp();
             this.gbAcoes = new System.Windows.Forms.GroupBox();
             this.optFechar = new System.Windows.Forms.RadioButton();
             this.optCancelar = new System.Windows.Forms.RadioButton();
+            this.dpiVendedor = new dpLibrary05.Infrastructure.Controls.DPInput();
+            this.dpiNumOrcamento = new dpLibrary05.Infrastructure.Controls.DPInput();
+            this.dpiCliente = new dpLibrary05.Infrastructure.Controls.DPInput();
             ((System.ComponentModel.ISupportInitialize)(this.gridOrcamento)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -59,8 +65,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gridOrcamento.GroupByCaption = "Drag a column header here to group by that column";
             this.gridOrcamento.Images.Add(((System.Drawing.Image)(resources.GetObject("gridOrcamento.Images"))));
-            this.gridOrcamento.Location = new System.Drawing.Point(2, 66);
-            this.gridOrcamento.Margin = new System.Windows.Forms.Padding(2);
+            this.gridOrcamento.Location = new System.Drawing.Point(3, 140);
+            this.gridOrcamento.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gridOrcamento.Name = "gridOrcamento";
             this.gridOrcamento.PreviewInfo.Location = new System.Drawing.Point(0, 0);
             this.gridOrcamento.PreviewInfo.Size = new System.Drawing.Size(0, 0);
@@ -68,7 +74,7 @@
             this.gridOrcamento.PrintInfo.MeasurementDevice = C1.Win.C1TrueDBGrid.PrintInfo.MeasurementDeviceEnum.Screen;
             this.gridOrcamento.PrintInfo.MeasurementPrinterName = null;
             this.gridOrcamento.PrintInfo.PageSettings = ((System.Drawing.Printing.PageSettings)(resources.GetObject("gridOrcamento.PrintInfo.PageSettings")));
-            this.gridOrcamento.Size = new System.Drawing.Size(1006, 400);
+            this.gridOrcamento.Size = new System.Drawing.Size(1344, 433);
             this.gridOrcamento.TabIndex = 3;
             this.gridOrcamento.UseCompatibleTextRendering = false;
             this.gridOrcamento.PropBag = resources.GetString("gridOrcamento.PropBag");
@@ -76,12 +82,11 @@
             // btnCarregar
             // 
             this.btnCarregar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCarregar.Location = new System.Drawing.Point(925, 37);
-            this.btnCarregar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCarregar.Location = new System.Drawing.Point(1117, 35);
+            this.btnCarregar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCarregar.Name = "btnCarregar";
-            this.btnCarregar.Size = new System.Drawing.Size(82, 24);
+            this.btnCarregar.Size = new System.Drawing.Size(109, 70);
             this.btnCarregar.TabIndex = 2;
-            this.btnCarregar.Text = "Carregar";
             this.btnCarregar.UseVisualStyleBackColor = true;
             this.btnCarregar.Click += new System.EventHandler(this.BtnCarregar_Click);
             // 
@@ -92,9 +97,9 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSplitButton1});
-            this.toolStrip1.Location = new System.Drawing.Point(3, 552);
+            this.toolStrip1.Location = new System.Drawing.Point(4, 547);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(100, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(122, 27);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -104,41 +109,57 @@
             this.toolStripSplitButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsiMarcar,
             this.tsiDesmarca,
-            this.tsiExcel});
+            this.tsiExcel,
+            this.tsiPdf,
+            this.enviarParaWhatsAppToolStripMenuItem});
             this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(88, 22);
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(109, 24);
             this.toolStripSplitButton1.Text = "Ferramentas";
             // 
             // tsiMarcar
             // 
             this.tsiMarcar.Name = "tsiMarcar";
-            this.tsiMarcar.Size = new System.Drawing.Size(174, 22);
+            this.tsiMarcar.Size = new System.Drawing.Size(239, 26);
             this.tsiMarcar.Text = "Marcar Todos";
             // 
             // tsiDesmarca
             // 
             this.tsiDesmarca.Name = "tsiDesmarca";
-            this.tsiDesmarca.Size = new System.Drawing.Size(174, 22);
+            this.tsiDesmarca.Size = new System.Drawing.Size(239, 26);
             this.tsiDesmarca.Text = "Desmarcar Todos";
             // 
             // tsiExcel
             // 
             this.tsiExcel.Name = "tsiExcel";
-            this.tsiExcel.Size = new System.Drawing.Size(174, 22);
-            this.tsiExcel.Text = "Exportar para excel";
+            this.tsiExcel.Size = new System.Drawing.Size(239, 26);
+            this.tsiExcel.Text = "Exportar para Excel";
+            // 
+            // tsiPdf
+            // 
+            this.tsiPdf.Name = "tsiPdf";
+            this.tsiPdf.Size = new System.Drawing.Size(239, 26);
+            this.tsiPdf.Text = "Exportar para PDF";
+            this.tsiPdf.Click += new System.EventHandler(this.exportarParaPDFToolStripMenuItem_Click);
+            // 
+            // enviarParaWhatsAppToolStripMenuItem
+            // 
+            this.enviarParaWhatsAppToolStripMenuItem.Name = "enviarParaWhatsAppToolStripMenuItem";
+            this.enviarParaWhatsAppToolStripMenuItem.Size = new System.Drawing.Size(239, 26);
+            this.enviarParaWhatsAppToolStripMenuItem.Text = "Enviar para WhatsApp";
+            this.enviarParaWhatsAppToolStripMenuItem.Click += new System.EventHandler(this.enviarParaWhatsAppToolStripMenuItem_Click);
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.chkAberto);
             this.groupBox1.Controls.Add(this.chkCancelado);
             this.groupBox1.Controls.Add(this.chkFechado);
-            this.groupBox1.Location = new System.Drawing.Point(373, 3);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Location = new System.Drawing.Point(615, 75);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(271, 58);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(402, 56);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Situação do orçamento";
@@ -148,10 +169,10 @@
             this.chkAberto.AutoSize = true;
             this.chkAberto.Checked = true;
             this.chkAberto.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkAberto.Location = new System.Drawing.Point(11, 25);
-            this.chkAberto.Margin = new System.Windows.Forms.Padding(2);
+            this.chkAberto.Location = new System.Drawing.Point(15, 25);
+            this.chkAberto.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkAberto.Name = "chkAberto";
-            this.chkAberto.Size = new System.Drawing.Size(57, 17);
+            this.chkAberto.Size = new System.Drawing.Size(72, 21);
             this.chkAberto.TabIndex = 0;
             this.chkAberto.Text = "Aberto";
             this.chkAberto.UseVisualStyleBackColor = true;
@@ -159,10 +180,10 @@
             // chkCancelado
             // 
             this.chkCancelado.AutoSize = true;
-            this.chkCancelado.Location = new System.Drawing.Point(173, 25);
-            this.chkCancelado.Margin = new System.Windows.Forms.Padding(2);
+            this.chkCancelado.Location = new System.Drawing.Point(296, 23);
+            this.chkCancelado.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkCancelado.Name = "chkCancelado";
-            this.chkCancelado.Size = new System.Drawing.Size(77, 17);
+            this.chkCancelado.Size = new System.Drawing.Size(97, 21);
             this.chkCancelado.TabIndex = 2;
             this.chkCancelado.Text = "Cancelado";
             this.chkCancelado.UseVisualStyleBackColor = true;
@@ -170,16 +191,40 @@
             // chkFechado
             // 
             this.chkFechado.AutoSize = true;
-            this.chkFechado.Location = new System.Drawing.Point(86, 25);
-            this.chkFechado.Margin = new System.Windows.Forms.Padding(2);
+            this.chkFechado.Location = new System.Drawing.Point(149, 23);
+            this.chkFechado.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkFechado.Name = "chkFechado";
-            this.chkFechado.Size = new System.Drawing.Size(68, 17);
+            this.chkFechado.Size = new System.Drawing.Size(85, 21);
             this.chkFechado.TabIndex = 1;
             this.chkFechado.Text = "Fechado";
             this.chkFechado.UseVisualStyleBackColor = true;
             // 
+            // gbData
+            // 
+            this.gbData.Controls.Add(this.activeSearchData);
+            this.gbData.Controls.Add(this.rangeDate);
+            this.gbData.Location = new System.Drawing.Point(615, 11);
+            this.gbData.Margin = new System.Windows.Forms.Padding(4);
+            this.gbData.Name = "gbData";
+            this.gbData.Padding = new System.Windows.Forms.Padding(4);
+            this.gbData.Size = new System.Drawing.Size(402, 56);
+            this.gbData.TabIndex = 0;
+            this.gbData.TabStop = false;
+            // 
+            // activeSearchData
+            // 
+            this.activeSearchData.AutoSize = true;
+            this.activeSearchData.Location = new System.Drawing.Point(7, -1);
+            this.activeSearchData.Name = "activeSearchData";
+            this.activeSearchData.Size = new System.Drawing.Size(123, 21);
+            this.activeSearchData.TabIndex = 509;
+            this.activeSearchData.Text = "Filtrar por data";
+            this.activeSearchData.UseVisualStyleBackColor = true;
+            // 
             // rangeDate
             // 
+            this.rangeDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rangeDate.Date1CustomFormat = dpLibrary05.ucSymGen_ReferenceDtp.CustomFormatEnum.FShort;
             this.rangeDate.Date2CustomFormat = dpLibrary05.ucSymGen_ReferenceDtp.CustomFormatEnum.FShort;
             this.rangeDate.DialogResult = System.Windows.Forms.DialogResult.None;
@@ -187,24 +232,14 @@
             this.rangeDate.KeyPreview = false;
             this.rangeDate.Label1Text = dpLibrary05.ucSymGen_ReferenceDtp.LabelTextEnum.TFrom;
             this.rangeDate.Label2Text = dpLibrary05.ucSymGen_ReferenceDtp.LabelTextEnum.TTo;
-            this.rangeDate.Location = new System.Drawing.Point(7, 20);
-            this.rangeDate.Margin = new System.Windows.Forms.Padding(4);
+            this.rangeDate.Location = new System.Drawing.Point(9, 24);
+            this.rangeDate.Margin = new System.Windows.Forms.Padding(5);
             this.rangeDate.Name = "rangeDate";
             this.rangeDate.OpenModal = false;
             this.rangeDate.Parameters = ((System.Collections.Generic.IDictionary<string, object>)(resources.GetObject("rangeDate.Parameters")));
-            this.rangeDate.Size = new System.Drawing.Size(348, 22);
-            this.rangeDate.TabIndex = 0;
+            this.rangeDate.Size = new System.Drawing.Size(384, 27);
+            this.rangeDate.TabIndex = 2;
             this.rangeDate.TabOrderScheme = dpLibrary05.TabOrderManager.TabScheme.None;
-            // 
-            // gbData
-            // 
-            this.gbData.Controls.Add(this.rangeDate);
-            this.gbData.Location = new System.Drawing.Point(3, 3);
-            this.gbData.Name = "gbData";
-            this.gbData.Size = new System.Drawing.Size(365, 58);
-            this.gbData.TabIndex = 0;
-            this.gbData.TabStop = false;
-            this.gbData.Text = "Data do orçamento";
             // 
             // gbAcoes
             // 
@@ -212,9 +247,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbAcoes.Controls.Add(this.optFechar);
             this.gbAcoes.Controls.Add(this.optCancelar);
-            this.gbAcoes.Location = new System.Drawing.Point(3, 471);
+            this.gbAcoes.Location = new System.Drawing.Point(4, 579);
+            this.gbAcoes.Margin = new System.Windows.Forms.Padding(4);
             this.gbAcoes.Name = "gbAcoes";
-            this.gbAcoes.Size = new System.Drawing.Size(1004, 71);
+            this.gbAcoes.Padding = new System.Windows.Forms.Padding(4);
+            this.gbAcoes.Size = new System.Drawing.Size(1339, 88);
             this.gbAcoes.TabIndex = 4;
             this.gbAcoes.TabStop = false;
             this.gbAcoes.Text = "O que deseja fazer?";
@@ -223,9 +260,10 @@
             // 
             this.optFechar.AutoSize = true;
             this.optFechar.Checked = true;
-            this.optFechar.Location = new System.Drawing.Point(24, 42);
+            this.optFechar.Location = new System.Drawing.Point(32, 52);
+            this.optFechar.Margin = new System.Windows.Forms.Padding(4);
             this.optFechar.Name = "optFechar";
-            this.optFechar.Size = new System.Drawing.Size(111, 17);
+            this.optFechar.Size = new System.Drawing.Size(144, 21);
             this.optFechar.TabIndex = 0;
             this.optFechar.TabStop = true;
             this.optFechar.Text = "Fechar orçamento";
@@ -234,38 +272,129 @@
             // optCancelar
             // 
             this.optCancelar.AutoSize = true;
-            this.optCancelar.Location = new System.Drawing.Point(24, 19);
+            this.optCancelar.Location = new System.Drawing.Point(32, 23);
+            this.optCancelar.Margin = new System.Windows.Forms.Padding(4);
             this.optCancelar.Name = "optCancelar";
-            this.optCancelar.Size = new System.Drawing.Size(120, 17);
+            this.optCancelar.Size = new System.Drawing.Size(156, 21);
             this.optCancelar.TabIndex = 6;
             this.optCancelar.Text = "Cancelar orçamento";
             this.optCancelar.UseVisualStyleBackColor = true;
             // 
+            // dpiVendedor
+            // 
+            this.dpiVendedor.Active = false;
+            this.dpiVendedor.DataSource = null;
+            this.dpiVendedor.DP_Caption = "2799";
+            this.dpiVendedor.DP_CaptionVisibleType = dpLibrary05.Infrastructure.Controls.DPInput.CaptionVisibleTypeEnum.Top;
+            this.dpiVendedor.DP_DataField = null;
+            this.dpiVendedor.DP_FilterMemo = false;
+            this.dpiVendedor.DP_InputType = dpLibrary05.Infrastructure.Controls.DPInput.InputTypeEnum.SearchValueInput;
+            this.dpiVendedor.DP_Length = 0;
+            this.dpiVendedor.DP_Maximum = null;
+            this.dpiVendedor.DP_Minimum = null;
+            this.dpiVendedor.DP_NumericPrecision = 0;
+            this.dpiVendedor.EditMask = null;
+            this.dpiVendedor.EditMaskUpdate = false;
+            this.dpiVendedor.FindMode = false;
+            this.dpiVendedor.InterfaceField = null;
+            this.dpiVendedor.IsReadonly = false;
+            this.dpiVendedor.Location = new System.Drawing.Point(118, 14);
+            this.dpiVendedor.Margin = new System.Windows.Forms.Padding(4);
+            this.dpiVendedor.Multiline = false;
+            this.dpiVendedor.Name = "dpiVendedor";
+            this.dpiVendedor.SearchObject = null;
+            this.dpiVendedor.SettingValue = false;
+            this.dpiVendedor.Size = new System.Drawing.Size(444, 41);
+            this.dpiVendedor.TabIndex = 503;
+            // 
+            // dpiNumOrcamento
+            // 
+            this.dpiNumOrcamento.Active = false;
+            this.dpiNumOrcamento.DataSource = null;
+            this.dpiNumOrcamento.DP_Caption = "3182";
+            this.dpiNumOrcamento.DP_CaptionVisibleType = dpLibrary05.Infrastructure.Controls.DPInput.CaptionVisibleTypeEnum.Top;
+            this.dpiNumOrcamento.DP_DataField = null;
+            this.dpiNumOrcamento.DP_FilterMemo = false;
+            this.dpiNumOrcamento.DP_InputType = dpLibrary05.Infrastructure.Controls.DPInput.InputTypeEnum.StringInput;
+            this.dpiNumOrcamento.DP_Length = 0;
+            this.dpiNumOrcamento.DP_Maximum = null;
+            this.dpiNumOrcamento.DP_Minimum = null;
+            this.dpiNumOrcamento.DP_NumericPrecision = 0;
+            this.dpiNumOrcamento.EditMask = null;
+            this.dpiNumOrcamento.EditMaskUpdate = false;
+            this.dpiNumOrcamento.FindMode = false;
+            this.dpiNumOrcamento.InterfaceField = null;
+            this.dpiNumOrcamento.IsReadonly = false;
+            this.dpiNumOrcamento.Location = new System.Drawing.Point(18, 11);
+            this.dpiNumOrcamento.Margin = new System.Windows.Forms.Padding(4);
+            this.dpiNumOrcamento.Multiline = false;
+            this.dpiNumOrcamento.Name = "dpiNumOrcamento";
+            this.dpiNumOrcamento.SearchObject = null;
+            this.dpiNumOrcamento.SettingValue = false;
+            this.dpiNumOrcamento.Size = new System.Drawing.Size(92, 44);
+            this.dpiNumOrcamento.TabIndex = 507;
+            // 
+            // dpiCliente
+            // 
+            this.dpiCliente.Active = false;
+            this.dpiCliente.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dpiCliente.DataSource = null;
+            this.dpiCliente.DP_Caption = null;
+            this.dpiCliente.DP_CaptionVisibleType = dpLibrary05.Infrastructure.Controls.DPInput.CaptionVisibleTypeEnum.Hide;
+            this.dpiCliente.DP_DataField = null;
+            this.dpiCliente.DP_FilterMemo = false;
+            this.dpiCliente.DP_InputType = dpLibrary05.Infrastructure.Controls.DPInput.InputTypeEnum.SearchValueInput;
+            this.dpiCliente.DP_Length = 0;
+            this.dpiCliente.DP_Maximum = null;
+            this.dpiCliente.DP_Minimum = null;
+            this.dpiCliente.DP_NumericPrecision = 0;
+            this.dpiCliente.EditMask = null;
+            this.dpiCliente.EditMaskUpdate = false;
+            this.dpiCliente.FindMode = false;
+            this.dpiCliente.InterfaceField = null;
+            this.dpiCliente.IsReadonly = false;
+            this.dpiCliente.Location = new System.Drawing.Point(18, 68);
+            this.dpiCliente.Margin = new System.Windows.Forms.Padding(4);
+            this.dpiCliente.Multiline = false;
+            this.dpiCliente.Name = "dpiCliente";
+            this.dpiCliente.SearchObject = null;
+            this.dpiCliente.SettingValue = false;
+            this.dpiCliente.Size = new System.Drawing.Size(544, 44);
+            this.dpiCliente.TabIndex = 508;
+            // 
             // CancelarFehacrOrcamentosView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.dpiCliente);
+            this.Controls.Add(this.dpiNumOrcamento);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.dpiVendedor);
             this.Controls.Add(this.gbAcoes);
             this.Controls.Add(this.gbData);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.btnCarregar);
             this.Controls.Add(this.gridOrcamento);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "CancelarFehacrOrcamentosView";
-            this.Size = new System.Drawing.Size(1010, 609);
+            this.Size = new System.Drawing.Size(1347, 750);
             this.Controls.SetChildIndex(this.gridOrcamento, 0);
             this.Controls.SetChildIndex(this.btnCarregar, 0);
             this.Controls.SetChildIndex(this.toolStrip1, 0);
-            this.Controls.SetChildIndex(this.groupBox1, 0);
             this.Controls.SetChildIndex(this.gbData, 0);
             this.Controls.SetChildIndex(this.gbAcoes, 0);
+            this.Controls.SetChildIndex(this.dpiVendedor, 0);
+            this.Controls.SetChildIndex(this.groupBox1, 0);
+            this.Controls.SetChildIndex(this.dpiNumOrcamento, 0);
+            this.Controls.SetChildIndex(this.dpiCliente, 0);
             ((System.ComponentModel.ISupportInitialize)(this.gridOrcamento)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.gbData.ResumeLayout(false);
+            this.gbData.PerformLayout();
             this.gbAcoes.ResumeLayout(false);
             this.gbAcoes.PerformLayout();
             this.ResumeLayout(false);
@@ -286,10 +415,16 @@
         private System.Windows.Forms.CheckBox chkCancelado;
         private System.Windows.Forms.CheckBox chkFechado;
         private System.Windows.Forms.ToolStripMenuItem tsiExcel;
-        internal dpLibrary05.ucSymGen_ReferenceDtp rangeDate;
         private System.Windows.Forms.GroupBox gbData;
         private System.Windows.Forms.GroupBox gbAcoes;
         private System.Windows.Forms.RadioButton optFechar;
         private System.Windows.Forms.RadioButton optCancelar;
+        private System.Windows.Forms.ToolStripMenuItem tsiPdf;
+        private dpLibrary05.Infrastructure.Controls.DPInput dpiVendedor;
+        private dpLibrary05.Infrastructure.Controls.DPInput dpiNumOrcamento;
+        private System.Windows.Forms.CheckBox activeSearchData;
+        internal dpLibrary05.ucSymGen_ReferenceDtp rangeDate;
+        private System.Windows.Forms.ToolStripMenuItem enviarParaWhatsAppToolStripMenuItem;
+        private dpLibrary05.Infrastructure.Controls.DPInput dpiCliente;
     }
 }

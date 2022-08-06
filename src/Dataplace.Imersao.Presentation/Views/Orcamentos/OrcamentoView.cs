@@ -116,6 +116,7 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos
             //_pvm.RegisterInterfaceView<OrcamentoItemViewProvider>(tpFinanceiro, _c);
             //_pvm.RegisterView(tpAdicionais, () => new OrcamentoAdicionaisView(_c));
             _c.AddPartialViews(_pvm);
+
         }
 
 

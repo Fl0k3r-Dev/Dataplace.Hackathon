@@ -1,4 +1,5 @@
-﻿using Dataplace.Core.Application.Services.Results;
+﻿using C1.Win.C1TrueDBGrid;
+using Dataplace.Core.Application.Services.Results;
 using Dataplace.Core.Comunications;
 using Dataplace.Core.Domain.Localization.Messages.Extensions;
 using Dataplace.Core.Domain.Notifications;
@@ -6,16 +7,23 @@ using Dataplace.Core.Infra.CrossCutting.EventAggregator.Contracts;
 using Dataplace.Core.win.Controls.List.Behaviors;
 using Dataplace.Core.win.Controls.List.Behaviors.Contracts;
 using Dataplace.Core.win.Controls.List.Configurations;
+using Dataplace.Core.win.Views.Controllers;
+using Dataplace.Core.win.Views.Providers;
 using Dataplace.Imersao.Core.Application.Orcamentos.Commands;
 using Dataplace.Imersao.Core.Application.Orcamentos.Queries;
 using Dataplace.Imersao.Core.Application.Orcamentos.ViewModels;
 using Dataplace.Imersao.Core.Domain.Orcamentos.Enums;
+using Dataplace.Imersao.Presentation.Common;
 using Dataplace.Imersao.Presentation.Views.Orcamentos.Messages;
+using dpLibrary05;
 using dpLibrary05.Infrastructure.Helpers;
 using dpLibrary05.Infrastructure.Helpers.Permission;
+using dpLibrary05.SymphonyInterface;
 using MediatR;
+using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,8 +37,14 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
         private DateTime _endDate;
         private const int _itemSeg = 467;
         private IListBehavior<OrcamentoViewModel, OrcamentoQuery> _orcamentoList;
+        
         private readonly IServiceProvider _serviceProvider;
         private readonly IEventAggregator _eventAggregator;
+        private readonly RegisterViewController _c;
+
+        private const string _Path = "\\Arquivos\\";
+
+        private fSymGen_DLG_ImageList _ImageList;
         #endregion
 
         #region constructors
@@ -83,7 +97,28 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
             //  desabilitar ou habilitar algun componente em tela
             //  deixar invisível ou algo assim
             VerificarStatusControles();
-   
+
+            //Componentes
+            dpiNumOrcamento.FindMode = true;
+
+            dpiVendedor.DP_InputType = dpLibrary05.Infrastructure.Controls.DPInput.InputTypeEnum.SearchValueInput;
+            if (dpiVendedor.CurrentControl is dpLibrary05.Infrastructure.Controls.DPLookUpEdit l_Vendedor)
+            {
+                l_Vendedor.DP_ShowCaption = false;
+            }
+            dpiVendedor.SearchObject = GetSearchVendedor();
+
+            dpiCliente.DP_InputType = dpLibrary05.Infrastructure.Controls.DPInput.InputTypeEnum.SearchValueInput;
+            if (dpiCliente.CurrentControl is dpLibrary05.Infrastructure.Controls.DPLookUpEdit l)
+            {
+                l.DP_ShowCaption = true;
+            }
+            dpiCliente.SearchObject = GetClienteSearchObject();
+
+            configureBtn();
+
+            _orcamentoList.DataSourceChanged += _orcamentoList_DataSourceChanged;
+
         }
         #endregion
 
@@ -185,7 +220,7 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
 
 
             //  desmarcar todos itens no final do processo
-            // _orcamentoList.ChangeCheckState(false);
+            _orcamentoList.ChangeCheckState(false);
         }
 
         // teclas de atalho
@@ -272,6 +307,9 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
             configuration.Ignore(x => x.DataValidade);
             configuration.Ignore(x => x.TotalItens);
 
+            configuration.SetAllowFilter(true);
+            configuration.SetAllowSort(true);
+
             configuration.Property(x => x.Situacao)
                   .HasMinWidth(100)
                   .HasCaption("Situação")
@@ -340,6 +378,22 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
         {
             clsOffice.ExportTrueDbGridToExcel(gridOrcamento, xlsOption.xlsSaveAndOpen);
         }
+        private void exportarParaPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (gridOrcamento.RowCount > 0)
+            {
+
+            int codigoArquivoPDF = ExportToPDF();
+                if (codigoArquivoPDF == 0)
+                    MessageBox.Show("Não há registro(s) para exportar!");
+                    
+                MessageBox.Show($"Sucesso ao exportar para PDF! Arquivo exportado em: '{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory.ToString()) + _Path + codigoArquivoPDF}'");
+                   
+            }
+            else
+            {
+            }
+        }
         private void TsiDesmarcarTodos_Click(object sender, EventArgs e)
         {
             _orcamentoList.ChangeCheckState(false);
@@ -368,6 +422,7 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
 
             // exemplo pra deixar componente intaivo dependendo de uma opão
             // dtpPrevisaoEntrega.Enabled = optAtribuirPevisaoEntrega.Checked;
+
 
         }
         #endregion
@@ -418,6 +473,122 @@ namespace Dataplace.Imersao.Presentation.Views.Orcamentos.Tools
 
         }
 
+        #endregion
+
+        #region Another Methods
+
+        private void configureBtn()
+        {
+            _ImageList = new fSymGen_DLG_ImageList();
+            btnCarregar.Image = _ImageList.imgList32.Images[_ImageList.SEARCH_NEW_28];
+        }
+
+       private int generateCodePDF() 
+       {
+            Random rnd = new Random();
+            return rnd.Next();
+       }
+
+        private ISymInterfaceSearch _searchVendedor;
+
+        private ISymInterfaceSearch GetSearchVendedor()
+        {
+            if (_searchVendedor != null)
+                return _searchVendedor;
+
+            var prmVendendor = new dpLibrary05.Infrastructure.Helpers.clsSymSearch.SearchArgs()
+            {
+                Fields = new List<dpLibrary05.SymphonyInterface.clsSymInterfaceSearchField>()
+                {
+                    new dpLibrary05.SymphonyInterface.clsSymInterfaceSearchField(){
+                        SearchIndex = 2,
+                        VisibleEdit = false
+                    },
+                    new dpLibrary05.SymphonyInterface.clsSymInterfaceSearchField(){
+                        SearchIndex = 3,
+                        VisibleEdit = false
+                    },
+                    new dpLibrary05.SymphonyInterface.clsSymInterfaceSearchField(){
+                        SearchIndex = 4,
+                        VisibleEdit = false
+                    }
+                }
+            };
+            _searchVendedor = dpLibrary05.Infrastructure.Helpers.clsSymSearch.find_vendedor(prmVendendor);
+
+            return _searchVendedor;
+
+        }
+
+        private ISymInterfaceSearch _clienteSearchObject;
+        private ISymInterfaceSearch GetClienteSearchObject()
+        {
+
+            if (_clienteSearchObject == null)
+                _clienteSearchObject = PedidoSearch.find_orcamento_cliente();
+
+            _clienteSearchObject.SetaAzul = false;
+
+            _clienteSearchObject.BeforeSearch += (object sender, BeforeSearchEventArgs e) =>
+            {
+                e.SearchObject.Filter = "1=1";
+            };
+
+            _clienteSearchObject.AfterSearch += (object sender, AfterSearchEventArgs e) =>
+            {
+                var _interfaceMode = _c.GetInterfaceMode();
+
+                if (_interfaceMode != InterfaceModeEnum.Inserting)
+                    return;
+
+                //if (e.result)
+                //    ClienteSelecionado(e.value.ToString(), true);
+            };
+
+            return _clienteSearchObject;
+        }
+
+
+        private void enviarParaWhatsAppToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int codigoArquivoExportado = ExportToPDF();
+
+            string instanceId = "instance950"; // your instanceId
+            string token = "yourtoken";         //instance Token
+            string mobile = "14996445166";
+
+            var url = "https://api.ultramsg.com/" + instanceId + "/messages/document";
+            var client = new RestClient(url);
+            var request = new RestRequest(url, Method.Post);
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddParameter("token", token);
+            request.AddParameter("to", mobile);
+            request.AddParameter("filename", $"{codigoArquivoExportado}.pdf");
+            request.AddParameter("document", $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory.ToString()) + _Path + codigoArquivoExportado}.pdf");
+
+            RestResponse response = client.Execute(request);
+            var output = response.Content;
+            MessageBox.Show($"Resposta: " + output);
+        }
+
+        private void _orcamentoList_DataSourceChanged(object sender, Dataplace.Core.win.Controls.List.Delegates.DataSourceChangedEventArgs<OrcamentoViewModel> e)
+        {
+            gridOrcamento.Splits[0].DisplayColumns["DtFechamento"].Style.HorizontalAlignment = C1.Win.C1TrueDBGrid.AlignHorzEnum.Far;
+        }
+
+        private int ExportToPDF()
+        {
+            try
+            {
+                int codigoGerado = generateCodePDF();
+                gridOrcamento.ExportToPDF(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory.ToString()) + _Path + $"{codigoGerado}.pdf");
+                return codigoGerado;
+            }catch(Exception ex)
+            {
+                SymException.ShowMessage(ex, System.Reflection.MethodBase.GetCurrentMethod());
+                return 0;
+            }
+        }
         #endregion
 
     }
